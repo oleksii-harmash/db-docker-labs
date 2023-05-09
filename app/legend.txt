@@ -1,0 +1,8 @@
+"avg_{subject_name}_by_region.csv":
+    .csv file contains comparative statistics of average subject (optional) mark for between 2019 & 2020 years.
+columns:
+    -regname:   Region name
+    -year:      Year of average mark by region
+    -avg_mark:  Average mark
+task:
+    Compare the average English mark in each region in 2020 and 2019 avg those who were admitted to the test.
