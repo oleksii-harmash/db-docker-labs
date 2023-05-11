@@ -81,7 +81,6 @@ def insert_into(name: str, df: pd.DataFrame, connection: psycopg2.connect):
     t_size = TRANSACTION_SIZE
     try:
         while True:
-            connection.rollback()
             cursor = connection.cursor()
             cursor.execute(f'SELECT * FROM {name}_logs LIMIT 1;')
             rows_added, rows_left = cursor.fetchone()
@@ -102,13 +101,14 @@ def insert_into(name: str, df: pd.DataFrame, connection: psycopg2.connect):
                 break
         connection.close()
     except psycopg2.OperationalError:
+        connection.rollback()
         insert_into(name, df, connect())
     print(f'All data successfully inserted.')
 
 
 if __name__ == '__main__':
     progress_bar = [_ for _ in range(10, 101, 10)]
-    sql_types = {'object': 'TEXT', 'int64': 'INT', 'float64': 'DECIMAL'}
+    sql_types = {'object': 'TEXT', 'int64': 'INT', 'float64': 'DOUBLE PRECISION'}
     start_time = time.time()
 
     df = read_csv()
